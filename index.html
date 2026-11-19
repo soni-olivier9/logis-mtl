@@ -1,0 +1,118 @@
+!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logis Mtl</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, Arial, sans-serif; background: #f4f5f7; color: #222; padding-bottom: 70px; }
+  header { background: #1d4ed8; color: white; padding: 16px; position: sticky; top: 0; z-index: 10; }
+  header h1 { font-size: 20px; margin-bottom: 10px; }
+  .filtres { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filtres input, .filtres select { flex: 1; min-width: 100px; padding: 10px; border: none; border-radius: 8px; font-size: 14px; }
+  main { padding: 16px; max-width: 700px; margin: 0 auto; }
+  .compte { font-size: 14px; color: #555; margin-bottom: 12px; }
+  .carte { background: white; border-radius: 12px; overflow: hidden; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+  .photo { height: 150px; background: linear-gradient(135deg, #93c5fd, #c4b5fd); display: flex; align-items: center; justify-content: center; font-size: 40px; }
+  .infos { padding: 12px; }
+  .prix { font-size: 20px; font-weight: bold; color: #1d4ed8; }
+  .details { font-size: 14px; color: #555; margin: 4px 0 8px; }
+  .etiquette { display: inline-block; font-size: 12px; padding: 3px 8px; border-radius: 20px; }
+  .gestionnaire { background: #dbeafe; color: #1e40af; }
+  .proprio { background: #dcfce7; color: #166534; }
+  .coeur { float: right; font-size: 22px; cursor: pointer; background: none; border: none; }
+  nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; border-top: 1px solid #ddd; }
+  nav button { flex: 1; padding: 12px 0; border: none; background: none; font-size: 12px; cursor: pointer; }
+  nav button.actif { color: #1d4ed8; font-weight: bold; }
+  .publier { position: fixed; right: 16px; bottom: 80px; background: #16a34a; color: white; border: none; border-radius: 30px; padding: 14px 20px; font-size: 15px; font-weight: bold; box-shadow: 0 2px 8px rgba(0,0,0,0.25); cursor: pointer; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏠 Logis Mtl</h1>
+  <div class="filtres">
+    <input type="number" id="budget" placeholder="Budget max ($)">
+    <select id="quartier">
+      <option value="">Tous les quartiers</option>
+      <option>Plateau</option>
+      <option>Rosemont</option>
+      <option>Villeray</option>
+      <option>Verdun</option>
+      <option>Hochelaga</option>
+      <option>Saint-Michel</option>
+    </select>
+    <select id="chambres">
+      <option value="">Chambres</option>
+      <option value="0">Studio</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3 et plus</option>
+    </select>
+  </div>
+</header>
+
+<main>
+  <p class="compte" id="compte"></p>
+  <div id="liste"></div>
+</main>
+
+<button class="publier" onclick="alert('Bientôt : formulaire pour publier une annonce')">+ Publier</button>
+
+<nav>
+  <button class="actif">📋<br>Liste</button>
+  <button onclick="alert('Bientôt : la carte')">🗺️<br>Carte</button>
+  <button onclick="alert('Bientôt : les favoris')">❤️<br>Favoris</button>
+  <button onclick="alert('Bientôt : les alertes')">🔔<br>Alertes</button>
+</nav>
+
+<script>
+  // Annonces d'exemple (fictives). Plus tard : base de données.
+  const annonces = [
+    { prix: 850,  quartier: "Saint-Michel", chambres: 1, source: "proprio",      titre: "3 1/2 lumineux près du métro" },
+    { prix: 725,  quartier: "Hochelaga",    chambres: 0, source: "proprio",      titre: "Studio rénové, chauffé" },
+    { prix: 1150, quartier: "Villeray",     chambres: 2, source: "gestionnaire", titre: "4 1/2 avec balcon" },
+    { prix: 990,  quartier: "Verdun",       chambres: 1, source: "gestionnaire", titre: "3 1/2 près de la rivière" },
+    { prix: 1350, quartier: "Plateau",      chambres: 2, source: "proprio",      titre: "4 1/2 sur le Plateau" },
+    { prix: 1500, quartier: "Rosemont",     chambres: 3, source: "gestionnaire", titre: "5 1/2 familial" }
+  ];
+
+  const favoris = new Set();
+
+  function afficher() {
+    const budget = parseInt(document.getElementById("budget").value) || Infinity;
+    const quartier = document.getElementById("quartier").value;
+    const chambres = document.getElementById("chambres").value;
+
+    const resultats = annonces
+      .filter(a => a.prix <= budget)
+      .filter(a => !quartier || a.quartier === quartier)
+      .filter(a => chambres === "" || (chambres === "3" ? a.chambres >= 3 : a.chambres === parseInt(chambres)))
+      .sort((a, b) => a.prix - b.prix);
+
+    document.getElementById("compte").textContent = resultats.length + " logement(s) trouvé(s), du moins cher au plus cher";
+
+    document.getElementById("liste").innerHTML = resultats.map((a, i) => `
+      <div class="carte">
+        <div class="photo">🏢</div>
+        <div class="infos">
+          <button class="coeur" onclick="basculerFavori('${a.titre}')">${favoris.has(a.titre) ? '❤️' : '🤍'}</button>
+          <div class="prix">${a.prix} $ / mois</div>
+          <div class="details">${a.titre} · ${a.quartier}</div>
+          <span class="etiquette ${a.source}">${a.source === 'gestionnaire' ? 'Gestionnaire d\'immeuble' : 'Propriétaire'}</span>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function basculerFavori(titre) {
+    favoris.has(titre) ? favoris.delete(titre) : favoris.add(titre);
+    afficher();
+  }
+
+  document.querySelectorAll("input, select").forEach(el => el.addEventListener("input", afficher));
+  afficher();
+</script>
+</body>
+</html>
