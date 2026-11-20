@@ -28,7 +28,7 @@
   .entete h2 { font-size:28px; }
   .compte { font-size:13px; color:var(--gris); }
   .reinit { background:none; border:none; color:var(--or); cursor:pointer; font:inherit; font-size:13px; text-decoration:underline; }
-  .carte { background:var(--blanc); margin-bottom:22px; border-radius:4px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.05); transition:transform .25s, box-shadow .25s; }
+  .carte { background:var(--blanc); margin-bottom:22px; border-radius:4px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.05); transition:transform .25s, box-shadow .25s; cursor:pointer; }
   .carte:hover { transform:translateY(-3px); box-shadow:0 10px 28px rgba(0,0,0,.1); }
   .photo { height:210px; background-size:cover; background-position:center; position:relative; }
   .etiquette { position:absolute; top:14px; left:14px; background:rgba(255,255,255,.94); font-size:10px; letter-spacing:.14em; text-transform:uppercase; padding:5px 10px; }
@@ -38,6 +38,7 @@
   .prix span { font-family:'Inter'; font-size:13px; color:var(--gris); font-weight:300; }
   .titre { margin-top:2px; font-size:15px; }
   .details { font-size:13px; color:var(--gris); margin-top:6px; }
+  .voir { display:inline-block; margin-top:10px; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--or); }
   .vide { text-align:center; padding:50px 20px; background:var(--blanc); border-radius:4px; }
   .vide h3 { font-size:24px; margin-bottom:8px; }
   .vide p { color:var(--gris); font-size:14px; margin-bottom:16px; }
@@ -46,6 +47,7 @@
   #carte-map { height:calc(100vh - 150px); min-height:420px; border-radius:4px; }
   .leaflet-popup-content { font-family:'Inter',sans-serif; font-size:13px; }
   .leaflet-popup-content strong { font-family:'Cormorant Garamond',serif; font-size:20px; }
+  .leaflet-popup-content a { color:var(--or); cursor:pointer; text-decoration:underline; }
   nav { position:fixed; bottom:0; left:0; right:0; background:var(--blanc); border-top:1px solid var(--ligne); display:flex; z-index:1000; }
   nav button { flex:1; padding:14px 0 12px; border:none; background:none; font:inherit; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gris); cursor:pointer; }
   nav button.actif { color:var(--noir); box-shadow:inset 0 2px 0 var(--or); }
@@ -60,7 +62,28 @@
   .modal h2 { font-size:30px; }
   .modal .msg { font-size:13px; color:var(--gris); min-height:18px; }
   .modal .annuler { background:none; border:none; color:var(--gris); cursor:pointer; font:inherit; font-size:13px; text-decoration:underline; }
-  @media (min-width:700px){ .recherche{grid-template-columns:1.2fr 1fr 1fr auto;align-items:end;} .bouton{grid-column:auto;padding:14px 26px;} .hero h1{font-size:54px;} .fond{align-items:center;} .modal{border-radius:8px;} }
+
+  /* Page de détail */
+  .detail { background:var(--blanc); width:100%; max-width:640px; max-height:96vh; overflow:auto; border-radius:12px 12px 0 0; position:relative; }
+  .fermer { position:absolute; top:12px; right:12px; z-index:5; width:38px; height:38px; border-radius:50%; border:none; background:rgba(255,255,255,.95); font-size:20px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.2); }
+  .galerie { position:relative; background:#ddd; }
+  .defile { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .defile::-webkit-scrollbar { display:none; }
+  .defile img { flex:0 0 100%; width:100%; height:320px; object-fit:cover; scroll-snap-align:center; }
+  .compteur { position:absolute; bottom:12px; right:12px; background:rgba(0,0,0,.6); color:#fff; font-size:12px; padding:4px 10px; border-radius:20px; }
+  .fleche { position:absolute; top:50%; transform:translateY(-50%); width:40px; height:40px; border-radius:50%; border:none; background:rgba(255,255,255,.9); font-size:20px; cursor:pointer; z-index:3; }
+  .fleche.g { left:10px; } .fleche.d { right:10px; }
+  .corps { padding:24px 24px 30px; }
+  .corps .prix { font-size:38px; }
+  .corps h2 { font-size:30px; margin:6px 0 4px; line-height:1.15; }
+  .corps .lieu { color:var(--gris); font-size:14px; margin-bottom:16px; }
+  .badges { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+  .badge { border:1px solid var(--ligne); padding:6px 12px; font-size:12px; letter-spacing:.08em; border-radius:20px; }
+  .corps p.desc { font-size:15px; margin-bottom:22px; }
+  .actions { display:grid; gap:10px; }
+  .actions .bouton { grid-column:auto; display:block; text-align:center; text-decoration:none; }
+  .actions .second { background:var(--blanc); color:var(--noir); border:1px solid var(--noir); }
+  @media (min-width:700px){ .recherche{grid-template-columns:1.2fr 1fr 1fr auto;align-items:end;} .bouton{grid-column:auto;padding:14px 26px;} .hero h1{font-size:54px;} .fond{align-items:center;} .modal,.detail{border-radius:8px;} }
 </style>
 </head>
 <body>
@@ -111,6 +134,12 @@
 <button class="publier" onclick="ouvrirForm()">Publier une annonce</button>
 <footer>© Maison · Logements à Montréal</footer>
 
+<!-- Fenêtre de détail -->
+<div class="fond" id="fond-detail" onclick="if(event.target===this)fermerDetail()">
+  <div class="detail" id="detail"></div>
+</div>
+
+<!-- Formulaire -->
 <div class="fond" id="fond">
   <div class="modal">
     <h2>Publier un logement</h2>
@@ -145,12 +174,15 @@
   const SUPA_KEY = 'sb_publishable_vyKrBXqTXOeaXKmiglLLaw_MP1pScCI';
   const H = { apikey: SUPA_KEY, 'Content-Type': 'application/json' };
 
-  const photos = [
-    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=70',
-    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=70',
-    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=70',
-    'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=70'
+  // Photos d'exemple (en attendant l'envoi de vraies photos)
+  const banque = [
+    'photo-1522708323590-d24dbb6b0267','photo-1502672260266-1c1ef2d93688','photo-1560448204-e02f11c3d0e2',
+    'photo-1493809842364-78817add7ffb','photo-1484154218962-a197022b5858','photo-1556909114-f6e7ad7d3136',
+    'photo-1505691938895-1758d7feb511','photo-1540518614846-7eded433c457'
   ];
+  const url = (id, w) => 'https://images.unsplash.com/' + id + '?auto=format&fit=crop&w=' + w + '&q=70';
+  const galeriePour = a => [0, 1, 2, 3].map(i => url(banque[(a.id + i * 2) % banque.length], 1000));
+
   const centres = {
     'Plateau':[45.5230,-73.5780],'Rosemont':[45.5470,-73.5800],'Villeray':[45.5430,-73.6200],
     'Verdun':[45.4590,-73.5720],'Hochelaga':[45.5420,-73.5400],'Saint-Michel':[45.5650,-73.6000],
@@ -167,7 +199,7 @@
     try {
       const r = await fetch(SUPA_URL + '/rest/v1/annonces?select=*&order=prix.asc', { headers: H });
       if (!r.ok) throw new Error(r.status);
-      annonces = (await r.json()).map(a => ({ ...a, photo: a.photo || photos[a.id % photos.length] }));
+      annonces = (await r.json()).map(a => ({ ...a, photo: a.photo || url(banque[a.id % banque.length], 900) }));
       etat = 'ok';
     } catch (e) { etat = 'erreur'; }
     afficher();
@@ -184,18 +216,20 @@
       .sort((a, b) => a.prix - b.prix);
   }
 
+  const typeCh = a => a.chambres === 0 ? 'Studio' : a.chambres + (a.chambres > 1 ? ' chambres' : ' chambre');
+
   function carteHtml(a) {
     const label = a.source === 'gestionnaire' ? 'Gestionnaire' : 'Propriétaire';
-    const typeCh = a.chambres === 0 ? 'Studio' : a.chambres + (a.chambres > 1 ? ' chambres' : ' chambre');
-    return `<article class="carte">
+    return `<article class="carte" onclick="ouvrirDetail(${a.id})">
       <div class="photo" style="background-image:url('${esc(a.photo)}')">
         <span class="etiquette">${label}</span>
-        <button class="coeur" onclick="basculerFavori(${a.id})">${favoris.has(a.id) ? '♥' : '♡'}</button>
+        <button class="coeur" onclick="event.stopPropagation();basculerFavori(${a.id})">${favoris.has(a.id) ? '♥' : '♡'}</button>
       </div>
       <div class="infos">
         <div class="prix">${a.prix} $ <span>/ mois</span></div>
         <div class="titre">${esc(a.titre)}</div>
-        <div class="details">${esc(a.quartier)} · ${typeCh}</div>
+        <div class="details">${esc(a.quartier)} · ${typeCh(a)}</div>
+        <span class="voir">Voir le logement →</span>
       </div></article>`;
   }
 
@@ -218,6 +252,44 @@
     favoris.has(id) ? favoris.delete(id) : favoris.add(id);
     localStorage.setItem('favoris', JSON.stringify([...favoris]));
     afficher();
+    if ($('fond-detail').classList.contains('ouvert')) ouvrirDetail(id, true);
+  }
+
+  // Page de détail
+  function ouvrirDetail(id, garderScroll) {
+    const a = annonces.find(x => x.id === id);
+    if (!a) return;
+    const photosA = galeriePour(a);
+    const label = a.source === 'gestionnaire' ? 'Gestionnaire d\'immeuble' : 'Propriétaire';
+    const desc = a.description || `Logement ${typeCh(a).toLowerCase()} situé dans le quartier ${a.quartier}, à Montréal. Contactez ${a.source === 'gestionnaire' ? 'le gestionnaire' : 'le propriétaire'} pour organiser une visite.`;
+    $('detail').innerHTML = `
+      <button class="fermer" onclick="fermerDetail()">✕</button>
+      <div class="galerie">
+        <button class="fleche g" onclick="glisser(-1)">‹</button>
+        <button class="fleche d" onclick="glisser(1)">›</button>
+        <div class="defile" id="defile" onscroll="majCompteur()">${photosA.map(p => `<img src="${p}" alt="Photo du logement" loading="lazy">`).join('')}</div>
+        <span class="compteur" id="compteur">1 / ${photosA.length}</span>
+      </div>
+      <div class="corps">
+        <div class="prix">${a.prix} $ <span>/ mois</span></div>
+        <h2>${esc(a.titre)}</h2>
+        <div class="lieu">${esc(a.quartier)}, Montréal</div>
+        <div class="badges"><span class="badge">${typeCh(a)}</span><span class="badge">${label}</span></div>
+        <p class="desc">${esc(desc)}</p>
+        <div class="actions">
+          <button class="bouton" onclick="alert('Bientôt : messagerie pour contacter ${a.source === 'gestionnaire' ? 'le gestionnaire' : 'le propriétaire'}')">Contacter</button>
+          <button class="bouton second" onclick="basculerFavori(${a.id})">${favoris.has(a.id) ? '♥ Retirer des favoris' : '♡ Ajouter aux favoris'}</button>
+        </div>
+      </div>`;
+    $('fond-detail').classList.add('ouvert');
+    document.body.style.overflow = 'hidden';
+  }
+  function fermerDetail() { $('fond-detail').classList.remove('ouvert'); document.body.style.overflow = ''; }
+  function glisser(sens) { const d = $('defile'); d.scrollBy({ left: sens * d.clientWidth, behavior: 'smooth' }); }
+  function majCompteur() {
+    const d = $('defile'); if (!d) return;
+    const n = d.children.length, i = Math.round(d.scrollLeft / d.clientWidth) + 1;
+    $('compteur').textContent = Math.min(i, n) + ' / ' + n;
   }
 
   // Formulaire
@@ -260,7 +332,7 @@
     couche.clearLayers();
     liste.filter(a => a.lat && a.lng).forEach(a => {
       L.marker([a.lat, a.lng]).addTo(couche)
-        .bindPopup(`<strong>${a.prix} $</strong><br>${esc(a.titre)}<br>${esc(a.quartier)}`);
+        .bindPopup(`<strong>${a.prix} $</strong><br>${esc(a.titre)}<br>${esc(a.quartier)}<br><a onclick="ouvrirDetail(${a.id})">Voir le logement</a>`);
     });
   }
 
