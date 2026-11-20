@@ -13,28 +13,21 @@
   html { scroll-behavior:smooth; }
   body { font-family:'Inter',sans-serif; font-weight:300; background:var(--clair); color:var(--noir); line-height:1.6; padding-bottom:76px; }
   h1,h2,h3 { font-family:'Cormorant Garamond',serif; font-weight:500; }
-
-  /* Accueil */
   .hero { background:linear-gradient(rgba(20,20,20,.55),rgba(20,20,20,.55)),url('https://images.unsplash.com/photo-1519178614-68673b201f36?auto=format&fit=crop&w=1400&q=70') center/cover; color:var(--blanc); text-align:center; padding:70px 22px 90px; }
   .marque { letter-spacing:.35em; font-size:12px; text-transform:uppercase; margin-bottom:34px; font-weight:400; }
   .hero h1 { font-size:40px; line-height:1.15; margin-bottom:14px; }
   .hero p { font-size:15px; opacity:.85; max-width:420px; margin:0 auto; }
-
-  /* Recherche */
   .recherche { background:var(--blanc); max-width:760px; margin:-48px auto 0; border-radius:4px; padding:20px; box-shadow:0 10px 40px rgba(0,0,0,.12); display:grid; grid-template-columns:1fr 1fr; gap:14px; position:relative; z-index:5; }
   .champ label { display:block; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gris); margin-bottom:4px; }
   .champ input,.champ select { width:100%; border:none; border-bottom:1px solid var(--ligne); padding:8px 0; font:inherit; font-size:15px; background:transparent; color:var(--noir); outline:none; border-radius:0; }
   .champ input:focus,.champ select:focus { border-bottom-color:var(--or); }
   .bouton { grid-column:1/-1; background:var(--noir); color:var(--blanc); border:none; padding:14px; letter-spacing:.2em; text-transform:uppercase; font-size:12px; cursor:pointer; transition:background .2s; }
   .bouton:hover { background:var(--or); }
-
   main { max-width:760px; margin:0 auto; padding:34px 18px; }
   .entete { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:22px; }
   .entete h2 { font-size:28px; }
   .compte { font-size:13px; color:var(--gris); }
   .reinit { background:none; border:none; color:var(--or); cursor:pointer; font:inherit; font-size:13px; text-decoration:underline; }
-
-  /* Cartes */
   .carte { background:var(--blanc); margin-bottom:22px; border-radius:4px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.05); transition:transform .25s, box-shadow .25s; }
   .carte:hover { transform:translateY(-3px); box-shadow:0 10px 28px rgba(0,0,0,.1); }
   .photo { height:210px; background-size:cover; background-position:center; position:relative; }
@@ -45,43 +38,39 @@
   .prix span { font-family:'Inter'; font-size:13px; color:var(--gris); font-weight:300; }
   .titre { margin-top:2px; font-size:15px; }
   .details { font-size:13px; color:var(--gris); margin-top:6px; }
-
   .vide { text-align:center; padding:50px 20px; background:var(--blanc); border-radius:4px; }
   .vide h3 { font-size:24px; margin-bottom:8px; }
   .vide p { color:var(--gris); font-size:14px; margin-bottom:16px; }
-
-  /* Vues */
   .vue { display:none; }
   .vue.active { display:block; }
   #carte-map { height:calc(100vh - 150px); min-height:420px; border-radius:4px; }
   .leaflet-popup-content { font-family:'Inter',sans-serif; font-size:13px; }
   .leaflet-popup-content strong { font-family:'Cormorant Garamond',serif; font-size:20px; }
-
-  /* Navigation */
   nav { position:fixed; bottom:0; left:0; right:0; background:var(--blanc); border-top:1px solid var(--ligne); display:flex; z-index:1000; }
   nav button { flex:1; padding:14px 0 12px; border:none; background:none; font:inherit; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gris); cursor:pointer; }
   nav button.actif { color:var(--noir); box-shadow:inset 0 2px 0 var(--or); }
   .publier { position:fixed; right:16px; bottom:88px; z-index:1000; background:var(--or); color:var(--blanc); border:none; padding:14px 22px; letter-spacing:.16em; text-transform:uppercase; font-size:11px; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,.2); }
-
   .bientot { text-align:center; padding:60px 20px; background:var(--blanc); border-radius:4px; }
   .bientot h3 { font-size:26px; margin-bottom:8px; }
   .bientot p { color:var(--gris); font-size:14px; }
-
   footer { text-align:center; font-size:11px; color:var(--gris); letter-spacing:.1em; padding:10px 0 30px; }
-
-  @media (min-width:700px){ .recherche{grid-template-columns:1.2fr 1fr 1fr auto;align-items:end;} .bouton{grid-column:auto;padding:14px 26px;} .hero h1{font-size:54px;} }
+  .fond { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:2000; align-items:flex-end; justify-content:center; }
+  .fond.ouvert { display:flex; }
+  .modal { background:var(--blanc); width:100%; max-width:520px; max-height:92vh; overflow:auto; padding:26px 22px 30px; border-radius:12px 12px 0 0; display:grid; gap:16px; }
+  .modal h2 { font-size:30px; }
+  .modal .msg { font-size:13px; color:var(--gris); min-height:18px; }
+  .modal .annuler { background:none; border:none; color:var(--gris); cursor:pointer; font:inherit; font-size:13px; text-decoration:underline; }
+  @media (min-width:700px){ .recherche{grid-template-columns:1.2fr 1fr 1fr auto;align-items:end;} .bouton{grid-column:auto;padding:14px 26px;} .hero h1{font-size:54px;} .fond{align-items:center;} .modal{border-radius:8px;} }
 </style>
 </head>
 <body>
 
-<!-- VUE LISTE -->
 <div id="vue-liste" class="vue active">
   <section class="hero">
     <div class="marque">Maison · Montréal</div>
     <h1>Trouvez votre prochain chez-vous</h1>
     <p>Tous les logements à louer de la ville, réunis en un seul endroit, du plus abordable au plus cher.</p>
   </section>
-
   <section class="recherche">
     <div class="champ"><label>Budget maximum</label><input type="number" id="budget" placeholder="Ex. 1200 $"></div>
     <div class="champ"><label>Quartier</label>
@@ -100,34 +89,48 @@
     </div>
     <button class="bouton" onclick="document.getElementById('resultats').scrollIntoView()">Rechercher</button>
   </section>
-
   <main id="resultats">
-    <div class="entete">
-      <h2>Logements disponibles</h2>
-      <span class="compte" id="compte"></span>
-    </div>
+    <div class="entete"><h2>Logements disponibles</h2><span class="compte" id="compte"></span></div>
     <div id="liste"></div>
   </main>
 </div>
 
-<!-- VUE CARTE -->
 <div id="vue-carte" class="vue">
   <main><div class="entete"><h2>Carte</h2><span class="compte">Touchez un repère pour voir le logement</span></div>
   <div id="carte-map"></div></main>
 </div>
 
-<!-- VUE FAVORIS -->
 <div id="vue-favoris" class="vue">
   <main><div class="entete"><h2>Mes favoris</h2></div><div id="liste-favoris"></div></main>
 </div>
 
-<!-- VUE ALERTES -->
 <div id="vue-alertes" class="vue">
   <main><div class="bientot"><h3>Alertes</h3><p>Bientôt : recevez une notification dès qu'un logement correspond à vos critères.</p></div></main>
 </div>
 
-<button class="publier" onclick="alert('Bientôt : formulaire pour publier votre logement')">Publier une annonce</button>
+<button class="publier" onclick="ouvrirForm()">Publier une annonce</button>
 <footer>© Maison · Logements à Montréal</footer>
+
+<div class="fond" id="fond">
+  <div class="modal">
+    <h2>Publier un logement</h2>
+    <div class="champ"><label>Titre</label><input id="f-titre" placeholder="Ex. 4 1/2 lumineux près du métro" maxlength="80"></div>
+    <div class="champ"><label>Loyer mensuel ($)</label><input id="f-prix" type="number" placeholder="Ex. 950"></div>
+    <div class="champ"><label>Quartier</label>
+      <select id="f-quartier">
+        <option>Plateau</option><option>Rosemont</option><option>Villeray</option>
+        <option>Verdun</option><option>Hochelaga</option><option>Saint-Michel</option>
+        <option>Côte-des-Neiges</option><option>Ahuntsic</option><option>Griffintown</option>
+      </select>
+    </div>
+    <div class="champ"><label>Chambres</label>
+      <select id="f-chambres"><option value="0">Studio</option><option value="1">1 chambre</option><option value="2">2 chambres</option><option value="3">3 et plus</option></select>
+    </div>
+    <div class="msg" id="f-msg"></div>
+    <button class="bouton" id="f-envoyer" onclick="envoyerAnnonce()">Publier</button>
+    <button class="annuler" onclick="fermerForm()">Annuler</button>
+  </div>
+</div>
 
 <nav>
   <button class="actif" data-vue="liste">Logements</button>
@@ -138,35 +141,37 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+  const SUPA_URL = 'https://cfrghhaepeolnoawejxc.supabase.co';
+  const SUPA_KEY = 'sb_publishable_vyKrBXqTXOeaXKmiglLLaw_MP1pScCI';
+  const H = { apikey: SUPA_KEY, 'Content-Type': 'application/json' };
+
   const photos = [
     'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=70',
     'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=70',
     'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=70',
     'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=70'
   ];
+  const centres = {
+    'Plateau':[45.5230,-73.5780],'Rosemont':[45.5470,-73.5800],'Villeray':[45.5430,-73.6200],
+    'Verdun':[45.4590,-73.5720],'Hochelaga':[45.5420,-73.5400],'Saint-Michel':[45.5650,-73.6000],
+    'Côte-des-Neiges':[45.4980,-73.6290],'Ahuntsic':[45.5600,-73.6500],'Griffintown':[45.4920,-73.5600]
+  };
 
-  // Annonces d'exemple (fictives). Plus tard : vraie base de données.
-  const annonces = [
-    { id:1,  prix:695,  quartier:'Hochelaga',       chambres:0, source:'proprio',      titre:'Studio rénové, chauffé',        lat:45.5420, lng:-73.5400 },
-    { id:2,  prix:725,  quartier:'Saint-Michel',    chambres:0, source:'proprio',      titre:'Studio lumineux près du métro', lat:45.5650, lng:-73.6000 },
-    { id:3,  prix:850,  quartier:'Saint-Michel',    chambres:1, source:'proprio',      titre:'3 1/2 près du métro',           lat:45.5600, lng:-73.6100 },
-    { id:4,  prix:890,  quartier:'Ahuntsic',        chambres:1, source:'proprio',      titre:'3 1/2 tranquille avec cour',    lat:45.5600, lng:-73.6500 },
-    { id:5,  prix:920,  quartier:'Hochelaga',       chambres:1, source:'gestionnaire', titre:'3 1/2 neuf, planchers de bois',  lat:45.5470, lng:-73.5450 },
-    { id:6,  prix:990,  quartier:'Verdun',          chambres:1, source:'gestionnaire', titre:'3 1/2 près de la rivière',      lat:45.4590, lng:-73.5720 },
-    { id:7,  prix:1050, quartier:'Villeray',        chambres:1, source:'proprio',      titre:'3 1/2 avec balcon',             lat:45.5430, lng:-73.6200 },
-    { id:8,  prix:1100, quartier:'Côte-des-Neiges', chambres:1, source:'gestionnaire', titre:'3 1/2 près des universités',    lat:45.4980, lng:-73.6290 },
-    { id:9,  prix:1150, quartier:'Villeray',        chambres:2, source:'gestionnaire', titre:'4 1/2 avec balcon',             lat:45.5400, lng:-73.6150 },
-    { id:10, prix:1200, quartier:'Rosemont',        chambres:2, source:'proprio',      titre:'4 1/2 lumineux, ruelle verte',  lat:45.5470, lng:-73.5800 },
-    { id:11, prix:1250, quartier:'Verdun',          chambres:2, source:'proprio',      titre:'4 1/2 rénové près du métro',    lat:45.4640, lng:-73.5710 },
-    { id:12, prix:1350, quartier:'Plateau',         chambres:2, source:'proprio',      titre:'4 1/2 sur le Plateau',          lat:45.5230, lng:-73.5780 },
-    { id:13, prix:1400, quartier:'Griffintown',     chambres:1, source:'gestionnaire', titre:'3 1/2 moderne, vue sur le canal',lat:45.4920, lng:-73.5600 },
-    { id:14, prix:1500, quartier:'Rosemont',        chambres:3, source:'gestionnaire', titre:'5 1/2 familial',                lat:45.5520, lng:-73.5750 },
-    { id:15, prix:1650, quartier:'Plateau',         chambres:3, source:'proprio',      titre:'5 1/2 haut de plex',            lat:45.5250, lng:-73.5800 },
-    { id:16, prix:1800, quartier:'Griffintown',     chambres:2, source:'gestionnaire', titre:'4 1/2 condo, stationnement',    lat:45.4930, lng:-73.5620 }
-  ].map((a,i)=>({...a, photo:photos[i%photos.length]}));
-
-  const favoris = new Set(JSON.parse(localStorage.getItem('favoris')||'[]'));
+  let annonces = [];
+  let etat = 'chargement';
+  const favoris = new Set(JSON.parse(localStorage.getItem('favoris') || '[]'));
   const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  async function charger() {
+    try {
+      const r = await fetch(SUPA_URL + '/rest/v1/annonces?select=*&order=prix.asc', { headers: H });
+      if (!r.ok) throw new Error(r.status);
+      annonces = (await r.json()).map(a => ({ ...a, photo: a.photo || photos[a.id % photos.length] }));
+      etat = 'ok';
+    } catch (e) { etat = 'erreur'; }
+    afficher();
+  }
 
   function filtrer() {
     const budget = parseInt($('budget').value) || Infinity;
@@ -176,27 +181,29 @@
       .filter(a => a.prix <= budget)
       .filter(a => !quartier || a.quartier === quartier)
       .filter(a => ch === '' || (ch === '3' ? a.chambres >= 3 : a.chambres === parseInt(ch)))
-      .sort((a,b) => a.prix - b.prix);
+      .sort((a, b) => a.prix - b.prix);
   }
 
   function carteHtml(a) {
     const label = a.source === 'gestionnaire' ? 'Gestionnaire' : 'Propriétaire';
     const typeCh = a.chambres === 0 ? 'Studio' : a.chambres + (a.chambres > 1 ? ' chambres' : ' chambre');
     return `<article class="carte">
-      <div class="photo" style="background-image:url('${a.photo}')">
+      <div class="photo" style="background-image:url('${esc(a.photo)}')">
         <span class="etiquette">${label}</span>
-        <button class="coeur" onclick="basculerFavori(${a.id})">${favoris.has(a.id)?'♥':'♡'}</button>
+        <button class="coeur" onclick="basculerFavori(${a.id})">${favoris.has(a.id) ? '♥' : '♡'}</button>
       </div>
       <div class="infos">
         <div class="prix">${a.prix} $ <span>/ mois</span></div>
-        <div class="titre">${a.titre}</div>
-        <div class="details">${a.quartier} · ${typeCh}</div>
+        <div class="titre">${esc(a.titre)}</div>
+        <div class="details">${esc(a.quartier)} · ${typeCh}</div>
       </div></article>`;
   }
 
   function afficher() {
+    if (etat === 'chargement') { $('liste').innerHTML = '<div class="vide"><p>Chargement des logements…</p></div>'; return; }
+    if (etat === 'erreur') { $('liste').innerHTML = '<div class="vide"><h3>Connexion impossible</h3><p>Les logements n\'ont pas pu être chargés. Réessayez dans un instant.</p><button class="reinit" onclick="charger()">Réessayer</button></div>'; return; }
     const res = filtrer();
-    $('compte').textContent = res.length + ' logement' + (res.length>1?'s':'');
+    $('compte').textContent = res.length + ' logement' + (res.length > 1 ? 's' : '');
     $('liste').innerHTML = res.length ? res.map(carteHtml).join('') :
       `<div class="vide"><h3>Aucun logement ne correspond</h3><p>Essayez d'augmenter votre budget ou de choisir un autre quartier.</p><button class="reinit" onclick="reinitialiser()">Réinitialiser les filtres</button></div>`;
     const f = annonces.filter(a => favoris.has(a.id));
@@ -205,7 +212,7 @@
     if (carte) majRepères(res);
   }
 
-  function reinitialiser() { $('budget').value=''; $('quartier').value=''; $('chambres').value=''; afficher(); }
+  function reinitialiser() { $('budget').value = ''; $('quartier').value = ''; $('chambres').value = ''; afficher(); }
 
   function basculerFavori(id) {
     favoris.has(id) ? favoris.delete(id) : favoris.add(id);
@@ -213,20 +220,47 @@
     afficher();
   }
 
+  // Formulaire
+  function ouvrirForm() { $('f-msg').textContent = ''; $('fond').classList.add('ouvert'); }
+  function fermerForm() { $('fond').classList.remove('ouvert'); }
+  async function envoyerAnnonce() {
+    const titre = $('f-titre').value.trim();
+    const prix = parseInt($('f-prix').value);
+    const quartier = $('f-quartier').value;
+    const chambres = parseInt($('f-chambres').value);
+    if (!titre || !prix || prix < 100 || prix > 10000) { $('f-msg').textContent = 'Merci de remplir le titre et un loyer valide.'; return; }
+    const [lat, lng] = centres[quartier];
+    const jitter = () => (Math.random() - 0.5) * 0.01;
+    $('f-envoyer').disabled = true; $('f-msg').textContent = 'Envoi en cours…';
+    try {
+      const r = await fetch(SUPA_URL + '/rest/v1/annonces', {
+        method: 'POST',
+        headers: { ...H, Prefer: 'return=minimal' },
+        body: JSON.stringify({ titre, prix, quartier, chambres, source: 'proprio', lat: lat + jitter(), lng: lng + jitter() })
+      });
+      if (!r.ok) throw new Error(r.status);
+      ['f-titre', 'f-prix'].forEach(i => $(i).value = '');
+      fermerForm();
+      await charger();
+      window.scrollTo(0, 0);
+    } catch (e) { $('f-msg').textContent = "Échec de l'envoi. Réessayez dans un instant."; }
+    $('f-envoyer').disabled = false;
+  }
+
   // Carte
   let carte = null, couche = null;
   function initCarte() {
     if (carte) { carte.invalidateSize(); return; }
     carte = L.map('carte-map').setView([45.5200, -73.5900], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap' }).addTo(carte);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(carte);
     couche = L.layerGroup().addTo(carte);
     majRepères(filtrer());
   }
   function majRepères(liste) {
     couche.clearLayers();
-    liste.forEach(a => {
+    liste.filter(a => a.lat && a.lng).forEach(a => {
       L.marker([a.lat, a.lng]).addTo(couche)
-        .bindPopup(`<strong>${a.prix} $</strong><br>${a.titre}<br>${a.quartier}`);
+        .bindPopup(`<strong>${a.prix} $</strong><br>${esc(a.titre)}<br>${esc(a.quartier)}`);
     });
   }
 
@@ -236,12 +270,13 @@
     b.classList.add('actif');
     document.querySelectorAll('.vue').forEach(v => v.classList.remove('active'));
     $('vue-' + b.dataset.vue).classList.add('active');
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     if (b.dataset.vue === 'carte') initCarte();
   }));
 
-  ['budget','quartier','chambres'].forEach(id => $(id).addEventListener('input', afficher));
+  ['budget', 'quartier', 'chambres'].forEach(id => $(id).addEventListener('input', afficher));
   afficher();
+  charger();
 </script>
 </body>
 </html>
